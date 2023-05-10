@@ -14,3 +14,8 @@ model Author {
   id   String @id @default(uuid())
   name String
 }
+
+model Phrase {
+  id      String @id @default(uuid())
+  content String
+}
