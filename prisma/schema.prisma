@@ -32,4 +32,6 @@ model Opposition {
   firstAuthorId  String
   secondAuthor   Author @relation("SecondAuthorOpposition", fields: [secondAuthorId], references: [id])
   secondAuthorId String
+
+  @@map("oppositions")
 }
