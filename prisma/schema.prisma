@@ -9,7 +9,10 @@ datasource db {
 
 model Author {
   id                        String       @id @default(uuid())
+  createdAt                 DateTime     @default(now())
+  updatedAt                 DateTime     @updatedAt
   name                      String
+  slug                      String
   phrases                   Phrase[]
   oppositionsAsFirstAuthor  Opposition[] @relation("FirstAuthorOpposition")
   oppositionsAsSecondAuthor Opposition[] @relation("SecondAuthorOpposition")
@@ -18,20 +21,25 @@ model Author {
 }
 
 model Phrase {
-  id       String @id @default(uuid())
-  content  String
-  author   Author @relation(fields: [authorId], references: [id])
-  authorId String
+  id        String   @id @default(uuid())
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  content   String
+  authorId  String
+  author    Author   @relation(fields: [authorId], references: [id])
 
   @@map("phrases")
 }
 
 model Opposition {
-  id             String @id @default(uuid())
-  firstAuthor    Author @relation("FirstAuthorOpposition", fields: [firstAuthorId], references: [id])
+  id             String   @id @default(uuid())
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+  slug           String
   firstAuthorId  String
-  secondAuthor   Author @relation("SecondAuthorOpposition", fields: [secondAuthorId], references: [id])
   secondAuthorId String
+  firstAuthor    Author   @relation("FirstAuthorOpposition", fields: [firstAuthorId], references: [id])
+  secondAuthor   Author   @relation("SecondAuthorOpposition", fields: [secondAuthorId], references: [id])
 
   @@map("oppositions")
 }
