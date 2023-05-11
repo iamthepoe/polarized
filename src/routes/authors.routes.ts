@@ -19,8 +19,8 @@ router.get('/author/:id', async(req,res)=>{
 });
 
 router.post('/author', async (req,res)=>{
-    const {name} = req.body;
-    const response = await authorsService.create(name);
+    const {name, description} = req.body;
+    const response = await authorsService.create(name, description);
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
