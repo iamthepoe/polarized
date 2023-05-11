@@ -24,7 +24,7 @@ export class AuthorsService{
         }
     }
 
-    async findById(id: string | undefined){
+    async findById(id: string){
         try{
             const response = await this.client.findUnique({where: {id}});
             if(!response) return {code: 404, data: null, message: 'Not found.'};
