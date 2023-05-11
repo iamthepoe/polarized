@@ -38,7 +38,7 @@ export class AuthorsService{
         }
     }
 
-    async findMany(query: undefined | string){
+    async findMany(query?: string){
         try{
             const response = !!query 
                 ? await this.client.findMany({where: {name: {contains: query}}})
