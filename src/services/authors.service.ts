@@ -24,9 +24,12 @@ export class AuthorsService{
         }
     }
 
-    async findAll(){
+    async findMany(query: undefined | string){
         try{
-            const response = await this.client.findMany();
+            const response = !!query 
+                ? await this.client.findMany({where: {name: {contains: query}}}) 
+                : await this.client.findMany();
+
             return {code: 200, data: response, message: 'Finded!'};
         }catch{
             return {code: 500, data: null, message: 'Internal server error.'}
