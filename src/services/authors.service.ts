@@ -8,13 +8,16 @@ export class AuthorsService{
         this.client = client;
     }
 
-    async create(name: string){
-        if(!name?.trim()) return {code: 400, data: null, message: `Empty values.`}
+    async create(name: string, description: string){
+        if(!name?.trim() || !description?.trim()) 
+            return {code: 400, data: null, message: `Empty values.`}
+        
         try{
             const slug = slugify(name, {lower: true});
             const response = await this.client.create({
                 data:{
                     name,
+                    description,
                     slug
                 }
             });
@@ -46,7 +49,7 @@ export class AuthorsService{
             return {code: 500, data: null, message: 'Internal server error.'}
         }
     }
-
+    
     async deleteOne(id: string){
         try{
             let response = await this.client.findUnique({where:{id}});
