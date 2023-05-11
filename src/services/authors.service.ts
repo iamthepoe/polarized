@@ -11,7 +11,7 @@ export class AuthorsService{
     async create(name: string){
         if(!name?.trim()) return {code: 400, data: null, message: `Empty values.`}
         try{
-            const slug = slugify(name);
+            const slug = slugify(name, {lower: true});
             const response = await this.client.create({
                 data:{
                     name,
