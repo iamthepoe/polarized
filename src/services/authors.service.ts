@@ -49,6 +49,29 @@ export class AuthorsService{
             return {code: 500, data: null, message: 'Internal server error.'}
         }
     }
+
+    async updateOne(id: string, data: {name?: string, description?: string}){
+        const {name, description} = data;
+
+        if(!name){
+            delete data['name'];
+        }else{
+            data['slug'] = slugify(name, {lower: true});
+        }
+
+        if(!description) delete data['description'];
+        try{
+            let response = await this.client.findUnique({where: {id}});
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+            response = await this.client.update({
+                where: {id},
+                data
+            });
+            return {code: 200, data: response, message: 'Updated.'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
     
     async deleteOne(id: string){
         try{
