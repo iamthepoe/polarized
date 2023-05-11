@@ -38,10 +38,21 @@ export class AuthorsService{
     async findMany(query: undefined | string){
         try{
             const response = !!query 
-                ? await this.client.findMany({where: {name: {contains: query}}}) 
+                ? await this.client.findMany({where: {name: {contains: query}}})
                 : await this.client.findMany();
 
             return {code: 200, data: response, message: 'Finded!'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
+
+    async deleteOne(id: string){
+        try{
+            let response = await this.client.findUnique({where:{id}});
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+            response = await this.client.delete({where:{id}});
+            return {code: 204, data: response, message: 'Deleted.'};
         }catch{
             return {code: 500, data: null, message: 'Internal server error.'}
         }
