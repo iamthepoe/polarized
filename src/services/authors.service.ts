@@ -23,4 +23,13 @@ export class AuthorsService{
             return {code: 500, data: null, message: 'Server internal error.'};
         }
     }
+
+    async findAll(){
+        try{
+            const response = this.client.findMany();
+            return {code: 200, data: response, message: 'Finded!'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
 }
