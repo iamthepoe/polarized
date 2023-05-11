@@ -1,5 +1,6 @@
 import {Author} from '@prisma/client'
 import { authorsClient } from "../clients/clients.prisma";
+import { validateFields } from '../utils/validation.util';
 import slugify from "slugify";
 
 export class AuthorsService{
@@ -9,9 +10,13 @@ export class AuthorsService{
     }
 
     async create(name: string, description: string){
-        if(!name?.trim() || !description?.trim()) 
-            return {code: 400, data: null, message: `Empty values.`}
-        
+        const errorMessage = validateFields(
+            { value: name, label: "Name" },
+            { value: description, label: "Description" }
+         );
+
+        if (errorMessage) return { code: 400, data: null, message: errorMessage };
+
         try{
             const slug = slugify(name, {lower: true});
             const response = await this.client.create({
