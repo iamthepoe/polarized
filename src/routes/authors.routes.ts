@@ -11,6 +11,13 @@ router.get('/authors', async(req,res)=>{
     return res.status(code).json({data, message});
 });
 
+router.get('/author/:id', async(req,res)=>{
+    const {id} = req.params;
+    const response = await authorsService.findById(id);
+    const {data, code, message} = response;
+    return res.status(code).json({data, message});
+});
+
 router.post('/author', async (req,res)=>{
     const {name} = req.body;
     const response = await authorsService.create(name);
