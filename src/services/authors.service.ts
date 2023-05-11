@@ -2,7 +2,7 @@ import {Author} from '@prisma/client'
 import { authorsClient } from "../clients/clients.prisma";
 import slugify from "slugify";
 
-export class authorsService{
+export class AuthorsService{
     private client: typeof authorsClient;
     constructor(client: typeof authorsClient){
         this.client = client;
