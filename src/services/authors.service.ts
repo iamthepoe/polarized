@@ -8,8 +8,7 @@ export class authorsService{
         this.client = client;
     }
 
-    async create(data: Author){
-        const {name} = data;
+    async create(name: string){
         const slug = slugify(name);
 
         const response = await this.client.create({
@@ -19,6 +18,6 @@ export class authorsService{
             }
         });
 
-        return {status: 201, data: response, message: 'Created with success.'};
+        return {code: 201, data: response, message: 'Created with success.'};
     }
 }
