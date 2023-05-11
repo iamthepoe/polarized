@@ -9,15 +9,18 @@ export class AuthorsService{
     }
 
     async create(name: string){
-        const slug = slugify(name);
-
-        const response = await this.client.create({
-            data:{
-                name,
-                slug
-            }
-        });
-
-        return {code: 201, data: response, message: 'Created with success.'};
+        if(!name?.trim()) return {code: 400, data: null, message: `Empty values.`}
+        try{
+            const slug = slugify(name);
+            const response = await this.client.create({
+                data:{
+                    name,
+                    slug
+                }
+            });
+            return {code: 201, data: response, message: 'Created with success.'};
+        }catch{
+            return {code: 500, data: null, message: 'Server internal error.'};
+        }
     }
 }
