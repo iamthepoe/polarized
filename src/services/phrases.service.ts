@@ -7,12 +7,13 @@ export class PhrasesService{
         this.client = client;
     }
 
-    async create(data: {authorId: string, content: string}){
-        const {authorId, content} = data;
+    async create(data: {authorId: string, content: string, source: string}){
+        const {authorId, content, source} = data;
 
         const errorMessage = validateFields(
-            { value: content, label: "Content" },
-            { value: authorId, label: "authorId" }
+            { value: content, label: "content" },
+            { value: authorId, label: "authorId" },
+            { value: source, label: "source" }
          );
 
         if (errorMessage) return { code: 400, data: null, message: errorMessage };
@@ -21,6 +22,7 @@ export class PhrasesService{
             const response = await this.client.create({
                 data:{
                     content,
+                    source,
                     authorId
                 }
             });
