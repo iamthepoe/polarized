@@ -46,9 +46,35 @@ export class PhrasesService{
     async findMany(query?: string){
         try{
             const response = !!query 
-                ? await this.client.findMany({where: {content: {contains: query}}})
-                : await this.client.findMany();
-
+                ? await this.client.findMany({
+                    where: {
+                        content: {contains: query}
+                    },
+                    select:{
+                        id: true,
+                        content: true,
+                        source: true,
+                        author: {
+                            select:{
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                })
+                : await this.client.findMany({
+                    select:{
+                        id: true,
+                        content: true,
+                        source: true,
+                        author: {
+                            select:{
+                                id: true,
+                                name: true
+                            }
+                        }
+                    }
+                });
             return {code: 200, data: response, message: 'Finded!'};
         }catch{
             return {code: 500, data: null, message: 'Internal server error.'}
