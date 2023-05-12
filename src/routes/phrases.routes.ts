@@ -1,43 +1,43 @@
 import express from 'express';
-import {authorsServiceFactory} from '../factories/authors.service.factory';
+import { phrasesServiceFactory } from '../factories/phrases.service.factory';
 
 const router = express.Router();
-const authorsService = authorsServiceFactory();
+const phrasesService = phrasesServiceFactory();
 
-router.get('/authors', async(req,res)=>{
-    const name = req.query.name as string | undefined;
-    const response = await authorsService.findMany(name);
+router.get('/phrases', async(req,res)=>{
+    const content = req.query.content as string | undefined;
+    const response = await phrasesService.findMany(content);
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
 
-router.get('/author/:id', async(req,res)=>{
+router.get('/phrase/:id', async(req,res)=>{
     const {id} = req.params;
-    const response = await authorsService.findById(id);
+    const response = await phrasesService.findById(id);
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
 
-router.post('/author', async (req,res)=>{
-    const {name, description} = req.body;
-    const response = await authorsService.create(name, description);
+router.post('/phrase', async (req,res)=>{
+    const {content, authorId} = req.body;
+    const response = await phrasesService.create({content, authorId});
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
 
 router.patch('/author/:id', async (req,res)=>{
-    const {name, description} = req.body;
+    const {content, authorId} = req.body;
     const {id} = req.params;
-    const response = await authorsService.updateOne(id, {name, description});
+    const response = await phrasesService.updateOne(id, {content, authorId});
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
 
 router.delete('/author/:id', async (req,res)=>{
     const {id} = req.params;
-    const response = await authorsService.deleteOne(id);
+    const response = await phrasesService.deleteOne(id);
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
 
-export {router as AuthorsRoutes};
+export {router as PhrasesRoutes};
