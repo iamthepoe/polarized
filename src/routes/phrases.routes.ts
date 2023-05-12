@@ -26,9 +26,9 @@ router.post('/phrase', async (req,res)=>{
 });
 
 router.patch('/author/:id', async (req,res)=>{
-    const {content, authorId} = req.body;
+    const {content, authorId, source} = req.body;
     const {id} = req.params;
-    const response = await phrasesService.updateOne(id, {content, authorId});
+    const response = await phrasesService.updateOne(id, {content, authorId, source});
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
