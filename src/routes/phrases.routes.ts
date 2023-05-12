@@ -19,8 +19,8 @@ router.get('/phrase/:id', async(req,res)=>{
 });
 
 router.post('/phrase', async (req,res)=>{
-    const {content, authorId} = req.body;
-    const response = await phrasesService.create({content, authorId});
+    const {content, authorId, source} = req.body;
+    const response = await phrasesService.create({content, authorId, source});
     const {data, code, message} = response;
     return res.status(code).json({data, message});
 });
