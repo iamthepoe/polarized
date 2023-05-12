@@ -27,6 +27,7 @@ model Phrase {
   updatedAt DateTime @updatedAt
   content   String
   authorId  String
+  source String
   author    Author   @relation(fields: [authorId], references: [id])
 
   @@map("phrases")
