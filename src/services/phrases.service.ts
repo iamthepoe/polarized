@@ -55,12 +55,14 @@ export class PhrasesService{
         }
     }
 
-    async updateOne(id: string, data: {content?: string, authorId?: string}){
-        const {content, authorId} = data;
+    async updateOne(id: string, data: {content?: string, authorId?: string, source?: string}){
+        const {content, authorId, source} = data;
 
         if(!content) delete data['name'];
 
         if(!authorId) delete data['authorId'];
+
+        if(!source) delete data['source'];
         
         try{
             let response = await this.client.findUnique({where: {id}});
