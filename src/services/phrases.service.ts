@@ -34,7 +34,21 @@ export class PhrasesService{
 
     async findById(id: string){
         try{
-            const response = await this.client.findUnique({where: {id}});
+            const response = await this.client.findUnique({
+                where: {id},
+                select: {
+                    id: true,
+                    content: true,
+                    source: true,
+                    author:{
+                        select:{
+                            id: true,
+                            name: true
+                        }
+                    }
+                }
+            });
+            
             if(!response) return {code: 404, data: null, message: 'Not found.'};
 
             return {code: 200, data: response, message: 'Finded.'};
