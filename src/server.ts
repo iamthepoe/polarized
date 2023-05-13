@@ -2,6 +2,7 @@ import express from 'express';
 import dotenv from 'dotenv'
 import { AuthorsRoutes } from './routes/authors.routes';
 import { PhrasesRoutes } from './routes/phrases.routes';
+import { OppositionsRoutes } from './routes/opposition.routes';
 
 dotenv.config();
 
@@ -19,6 +20,7 @@ app.use((err, req: express.Request, res: express.Response, next: express.NextFun
 
 app.use('/', AuthorsRoutes);
 app.use('/', PhrasesRoutes);
+app.use('/', OppositionsRoutes);
 
 app.listen(SERVER_PORT, ()=>{
     console.log('Server running at http://localhost:' + SERVER_PORT);
