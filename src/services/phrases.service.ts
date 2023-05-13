@@ -48,7 +48,7 @@ export class PhrasesService{
                     }
                 }
             });
-            
+
             if(!response) return {code: 404, data: null, message: 'Not found.'};
 
             return {code: 200, data: response, message: 'Finded.'};
@@ -89,6 +89,25 @@ export class PhrasesService{
                         }
                     }
                 });
+            return {code: 200, data: response, message: 'Finded!'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
+
+    async findPhrasesByAuthor(authorId: string){
+        try{
+            const response = await this.client.findMany({
+                where: {authorId},
+                select: {
+                    id: true,
+                    content: true,
+                    source: true,
+                }
+            });
+            
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+
             return {code: 200, data: response, message: 'Finded!'};
         }catch{
             return {code: 500, data: null, message: 'Internal server error.'}
