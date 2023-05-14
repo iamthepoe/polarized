@@ -10,6 +10,13 @@ export class OppositionsService{
 
     async create(data: {firstAuthorId: string, secondAuthorId: string}){
         const {firstAuthorId, secondAuthorId} = data;
+        const errorMessage = validateFields(
+            { value: firstAuthorId, label: "firstAuthorId" },
+            { value: secondAuthorId, label: "secondAuthorId" }
+         );
+
+        if (errorMessage) return { code: 400, data: null, message: errorMessage };
+        
         try{
             const authors = await this.client.authors.findMany({
                 where: {
