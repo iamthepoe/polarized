@@ -47,6 +47,38 @@ export class OppositionsService{
         }
     }
     
+    async findById(id: string){
+        try{
+            const response = await this.client.opposition.findUnique({
+                where: {id},
+                    select: {
+                        id: true,
+                        slug: true,
+                        firstAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        },
+                        secondAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        }
+                    }
+            });
+
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+
+            return {code: 200, data: response, message: 'Finded.'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
+    
     async findMany(query?: string){
         try{
             const response = !!query 
