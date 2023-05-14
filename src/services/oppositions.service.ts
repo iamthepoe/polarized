@@ -23,8 +23,6 @@ export class OppositionsService{
                 }
             });
 
-            console.log(authors)
-
             if (authors.length < 2) return {code: 404, data: null, message: 'One or both authors not found.'};
             
             const slug = slugify(`${authors[0].name} ${authors[1].name}`, {lower: true});
