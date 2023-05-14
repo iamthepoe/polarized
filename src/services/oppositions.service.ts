@@ -46,7 +46,7 @@ export class OppositionsService{
             return {code: 500, data: null, message: 'Server internal error.'};
         }
     }
-    
+
     async findById(id: string){
         try{
             const response = await this.client.opposition.findUnique({
@@ -124,6 +124,17 @@ export class OppositionsService{
                     }
                 });
             return {code: 200, data: response, message: 'Finded!'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
+
+    async deleteOne(id: string){
+        try{
+            let response = await this.client.opposition.findUnique({where:{id}});
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+            response = await this.client.opposition.delete({where:{id}});
+            return {code: 204, data: response, message: 'Deleted.'};
         }catch{
             return {code: 500, data: null, message: 'Internal server error.'}
         }
