@@ -32,7 +32,7 @@ router.post('/phrase', async (req,res)=>{
     return res.status(code).json({data, message});
 });
 
-router.patch('/author/:id', async (req,res)=>{
+router.patch('/phrase/:id', async (req,res)=>{
     const {content, authorId, source} = req.body;
     const {id} = req.params;
     const response = await phrasesService.updateOne(id, {content, authorId, source});
