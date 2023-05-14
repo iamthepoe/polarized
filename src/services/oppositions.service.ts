@@ -16,7 +16,7 @@ export class OppositionsService{
          );
 
         if (errorMessage) return { code: 400, data: null, message: errorMessage };
-        
+
         try{
             const authors = await this.client.authors.findMany({
                 where: {
@@ -47,4 +47,53 @@ export class OppositionsService{
         }
     }
     
+    async findMany(query?: string){
+        try{
+            const response = !!query 
+                ? await this.client.opposition.findMany({
+                    where: {slug: {contains: query}},
+                    select: {
+                        id: true,
+                        slug: true,
+                        firstAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        },
+                        secondAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        }
+                    }
+                })
+                : await this.client.opposition.findMany({
+                    select: {
+                        id: true,
+                        slug: true,
+                        firstAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        },
+                        secondAuthor: {
+                            select:{
+                                id: true,
+                                name: true,
+                                description: true
+                            }
+                        }
+                    }
+                });
+            return {code: 200, data: response, message: 'Finded!'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
 }
