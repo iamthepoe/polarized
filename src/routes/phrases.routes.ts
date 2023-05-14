@@ -40,7 +40,7 @@ router.patch('/phrase/:id', async (req,res)=>{
     return res.status(code).json({data, message});
 });
 
-router.delete('/author/:id', async (req,res)=>{
+router.delete('/phrase/:id', async (req,res)=>{
     const {id} = req.params;
     const response = await phrasesService.deleteOne(id);
     const {data, code, message} = response;
