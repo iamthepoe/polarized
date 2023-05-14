@@ -25,4 +25,11 @@ router.post('/opposition', async (req,res)=>{
     return res.status(code).json({data, message});
 });
 
+router.delete('/opposition/:id', async (req,res)=>{
+    const {id} = req.params;
+    const response = await oppositionsService.deleteOne(id);
+    const {data, code, message} = response;
+    return res.status(code).json({data, message});
+})
+
 export {router as OppositionsRoutes};
