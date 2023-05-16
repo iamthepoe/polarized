@@ -18,6 +18,13 @@ router.get('/opposition/:id', async (req,res)=>{
     return res.status(code).json({data, message});
 });
 
+router.get('/opposition/phrases/:id', async (req,res)=>{
+    const {id} = req.params;
+    const response = await oppositionsService.findPhrasesByOpposition(id);
+    const {data, code, message} = response;
+    return res.status(code).json({data, message});
+})
+
 router.post('/opposition', async (req,res)=>{
     const {firstAuthorId, secondAuthorId} = req.body;
     const response = await oppositionsService.create({firstAuthorId, secondAuthorId});
