@@ -198,4 +198,36 @@ export class OppositionsService{
             return {code: 500, data: null, message: 'Internal server error.'}
         }
     }
+
+    async findPhrasesByOpposition(id: string){
+        const authorSelect = {
+            id: true,
+            name: true,
+            description: true,
+            phrases: {
+                select: {
+                    id: true,
+                    content: true,
+                    source: true,
+                    authorId: true
+                }
+            }
+        }
+        try{
+            let response = await this.client.opposition.findUnique({
+                where: {id},
+                select: {
+                    slug: true,
+                    firstAuthor: {select: authorSelect},
+                    secondAuthor: {select: authorSelect}
+                }
+            });
+
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+
+            return {code: 200, data: response, message: 'Finded.'}
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
 }
