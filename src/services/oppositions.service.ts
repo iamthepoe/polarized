@@ -129,6 +129,65 @@ export class OppositionsService{
         }
     }
 
+    async updateOne(id: string, data: {firstAuthorId?: string, secondAuthorId?: string}){
+        const {firstAuthorId, secondAuthorId} = data;
+        try{
+            let response = await this.client.opposition.findUnique({
+                where: {id},
+                select: {
+
+                    firstAuthor: {
+                        select: {name: true}
+                    },
+                    secondAuthor: {
+                        select: {name: true}
+                    }
+                }
+            });
+
+            if(!response) return {code: 404, data: null, message: 'Not found.'};
+
+            if(firstAuthorId){
+                var firstAuthor = await this.client.authors.findUnique({
+                    where:{id: firstAuthorId},
+                    select: {
+                        name: true
+                    }
+                });
+                if(!firstAuthor) return {code: 404, data: null, message: 'First author not found.'};
+                response.firstAuthor.name = firstAuthor.name;
+            }else{
+                delete data['firstAuthorId'];
+            }
+
+            if(secondAuthorId){
+                var secondAuthor = await this.client.authors.findUnique({
+                    where:{id: secondAuthorId},
+                    select: {
+                        name: true
+                    }
+                });
+                if(!secondAuthor) return {code: 404, data: null, message: 'Second author not found.'};
+                response.secondAuthor.name = secondAuthor.name;
+            }else{
+                delete data['secondAuthorId'];
+            }
+
+            data['slug'] = slugify(`${response.firstAuthor.name} ${response.secondAuthor.name}`, 
+                {lower: true}
+            );
+            
+            let updateResponse = await this.client.opposition.update({
+                where: {id},
+                data
+            });
+
+            return {code: 200, data: updateResponse, message: 'Updated.'};
+        }catch{
+            return {code: 500, data: null, message: 'Internal server error.'}
+        }
+    }
+
     async deleteOne(id: string){
         try{
             let response = await this.client.opposition.findUnique({where:{id}});
